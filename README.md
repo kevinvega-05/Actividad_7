@@ -157,23 +157,3 @@ Límite práctico: unas 250 celdas (para que un `DEP` quepa en un paquete UDP).
 | `pip` falla instalando pybullet | Usa Python 3.11, o Docker. |
 
 ---
-
-## 8. Estructura
-
-```
-aco_enjambre/
-├── firmware/aco_carrito/
-│   ├── aco_carrito.ino     ACO + red + movimiento virtual
-│   ├── config.h            CAR_ID, WiFi y parámetros ACO
-│   └── maze.h              laberinto (generado)
-├── simulacion/
-│   ├── laberinto.py        mapa (fuente única) y exportador a maze.h
-│   ├── simulacion.py       gemelo digital PyBullet + visor web
-│   ├── red_aco.py          cliente UDP del enjambre
-│   ├── aco_core.py         mismo ACO del firmware, en Python
-│   ├── emulador_esp32.py   3 ESP32 virtuales (modo demo)
-│   ├── requirements.txt
-│   └── Dockerfile
-├── docker-compose.yml
-└── docs/                   capturas
-```
