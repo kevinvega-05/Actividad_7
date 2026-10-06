@@ -1,0 +1,32 @@
+# Uso:
+#   Con los 3 ESP32 reales (PC conectado a la red WiFi ACO_SWARM):
+#       docker compose --profile real up --build
+#   Sin hardware (emulador de los 3 ESP32):
+#       docker compose --profile demo up --build
+#   Luego abre http://localhost:8080
+
+services:
+  simulacion:
+    profiles: ["real"]
+    build: ./simulacion
+    image: aco-enjambre-sim
+    ports:
+      - "8080:8080"
+      - "4210:4210/udp"
+    command: ["python", "simulacion.py", "--modo", "web", "--ap", "192.168.4.1"]
+    restart: unless-stopped
+
+  emulador:
+    profiles: ["demo"]
+    build: ./simulacion
+    image: aco-enjambre-sim
+    command: ["python", "emulador_esp32.py", "--puerto", "4211"]
+
+  simulacion-demo:
+    profiles: ["demo"]
+    image: aco-enjambre-sim
+    depends_on: [emulador]
+    ports:
+      - "8080:8080"
+    command: ["python", "simulacion.py", "--modo", "web",
+              "--ap", "emulador", "--ap-puerto", "4211"]
